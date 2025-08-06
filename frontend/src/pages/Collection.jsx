@@ -191,10 +191,10 @@
 // export default Collection;
 
 import React, { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../../context/ShopContext';
-import { assets } from '../assets/assets/assets';
-import Title from '../componets/Title';
-import ProductItem from '../componets/ProductItem';
+import { ShopContext } from '../../context/ShopContext.jsx';
+import { assets } from '../assets/assets/assets.js';
+import Title from '../components/Title.jsx';
+import ProductItem from '../components/ProductItem.jsx';
 import { motion } from 'framer-motion';
 
 const fadeIn = (direction = 'up', delay = 0) => ({
@@ -210,52 +210,80 @@ const Collection = () => {
   const [sortType, setSortType] = useState('relavent');
   const [visibleProducts, setVisibleProducts] = useState(6);
 
-  // Toggle filter
-  const toggleCategory = v => setCategory(prev => prev.includes(v) ? prev.filter(x=>x!==v) : [...prev,v]);
-  const toggleSubCategory = v => setSubCategory(prev => prev.includes(v) ? prev.filter(x=>x!==v) : [...prev,v]);
+  const toggleCategory = v =>
+    setCategory(prev => prev.includes(v) ? prev.filter(x => x !== v) : [...prev, v]);
+  const toggleSubCategory = v =>
+    setSubCategory(prev => prev.includes(v) ? prev.filter(x => x !== v) : [...prev, v]);
 
-  // Filter logic
   const applyFilter = () => {
     let list = [...products];
-    if (showSearch && search) list = list.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
-    if (category.length) list = list.filter(p => category.includes(p.category));
-    if (subCategory.length) list = list.filter(p => subCategory.includes(p.subCategory));
+    if (showSearch && search) {
+      list = list.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+    }
+    if (category.length) {
+      list = list.filter(p => category.includes(p.category));
+    }
+    if (subCategory.length) {
+      list = list.filter(p => subCategory.includes(p.subCategory));
+    }
     setFilterProducts(list);
     setVisibleProducts(6);
   };
 
-  // Sort logic
   const sortProducts = () => {
     let list = [...filterProducts];
-    if (sortType === 'low-high') list.sort((a,b) => a.price - b.price);
-    else if (sortType === 'high-low') list.sort((a,b) => b.price - a.price);
+    if (sortType === 'low-high') list.sort((a, b) => a.price - b.price);
+    else if (sortType === 'high-low') list.sort((a, b) => b.price - a.price);
     setFilterProducts(list);
   };
 
-  // Effects
-  useEffect(() => applyFilter(), [products, search, showSearch, category, subCategory]);
-  useEffect(() => sortProducts(), [sortType]);
+  useEffect(() => {
+    if (products && products.length > 0) {
+      applyFilter();
+    }
+  }, [products, search, showSearch, category, subCategory]);
 
-  const loadMore = () => setVisibleProducts(prev => Math.min(prev + 6, filterProducts.length));
+  useEffect(() => {
+    if (filterProducts.length > 0) {
+      sortProducts();
+    }
+  }, [sortType]);
+
+  const loadMore = () =>
+    setVisibleProducts(prev => Math.min(prev + 6, filterProducts.length));
   const showLess = () => setVisibleProducts(6);
 
   return (
     <div className="flex flex-col sm:flex-row gap-6 pt-10 border-t bg-[#fdfbf7] p-6">
       {/* Filters */}
-      <motion.div className="w-full sm:w-1/4" variants={fadeIn('right',0)} initial="hidden" whileInView="show" viewport={{once:true}}>
+      <motion.div
+        className="w-full sm:w-1/4"
+        variants={fadeIn('right', 0)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+      >
         <p className="my-2 text-xl font-medium text-[#1f2a44]">FILTERS</p>
         <div className="border border-gray-300 p-4 mb-4">
           <p className="text-sm font-semibold mb-2">CATEGORIES</p>
-          {['Men','Women','Kids'].map(cat=> (
-            <label key={cat} className="flex items-center gap-2 mb-1 text-gray-700 hover:text-[#1f2a44]" onClick={() => toggleCategory(cat)}>
+          {['Men', 'Women', 'Kids'].map(cat => (
+            <label
+              key={cat}
+              className="flex items-center gap-2 mb-1 text-gray-700 hover:text-[#1f2a44]"
+              onClick={() => toggleCategory(cat)}
+            >
               <input type="checkbox" checked={category.includes(cat)} className="h-4 w-4" /> {cat}
             </label>
           ))}
         </div>
         <div className="border border-gray-300 p-4">
           <p className="text-sm font-semibold mb-2">TYPE</p>
-          {['Topwear','Bottomwear','Winterwear'].map(sub=> (
-            <label key={sub} className="flex items-center gap-2 mb-1 text-gray-700 hover:text-[#1f2a44]" onClick={() => toggleSubCategory(sub)}>
+          {['Topwear', 'Bottomwear', 'Winterwear'].map(sub => (
+            <label
+              key={sub}
+              className="flex items-center gap-2 mb-1 text-gray-700 hover:text-[#1f2a44]"
+              onClick={() => toggleSubCategory(sub)}
+            >
               <input type="checkbox" checked={subCategory.includes(sub)} className="h-4 w-4" /> {sub}
             </label>
           ))}
@@ -263,34 +291,63 @@ const Collection = () => {
       </motion.div>
 
       {/* Products */}
-      <motion.div className="flex-1" variants={fadeIn('left',0)} initial="hidden" whileInView="show" viewport={{once:true}}>
-        {/* Title with navy accent bar like About section */}
+      <motion.div
+        className="flex-1"
+        variants={fadeIn('left', 0)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+      >
         <div className="relative mb-8">
-         
           <div className="relative inline-block px-4 bg-[#fdfbf7]">
             <Title text1="ALL" text2="COLLECTION" />
           </div>
         </div>
 
         <div className="flex justify-end mb-4">
-          <select onChange={e=>setSortType(e.target.value)} className="border-2 border-gray-300 text-sm px-2 py-1 rounded">
+          <select
+            onChange={e => setSortType(e.target.value)}
+            className="border-2 border-gray-300 text-sm px-2 py-1 rounded"
+          >
             <option value="relavent">Relevant</option>
             <option value="low-high">Price: Low to High</option>
             <option value="high-low">Price: High to Low</option>
           </select>
         </div>
 
-        <motion.div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" variants={fadeIn('up',0.2)} initial="hidden" whileInView="show" viewport={{once:true}}>
-          {filterProducts.slice(0, visibleProducts).map(p=>(
-            <ProductItem key={p._id} name={p.name} id={p._id} price={p.price} image={p.image} />
-          ))}
+        <motion.div
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 min-h-[200px]"
+          variants={fadeIn('up', 0.2)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+        >
+          {products.length === 0 ? (
+            <p className="col-span-full text-center text-gray-400">Loading products...</p>
+          ) : filterProducts.length === 0 ? (
+            <p className="col-span-full text-center text-gray-400">No matching products found.</p>
+          ) : (
+            filterProducts.slice(0, visibleProducts).map(p => (
+              <ProductItem key={p._id} name={p.name} id={p._id} price={p.price} image={p.image} />
+            ))
+          )}
         </motion.div>
 
         <div className="text-center mt-6">
           {visibleProducts < filterProducts.length ? (
-            <button onClick={loadMore} className="px-6 py-2 bg-[#1f2a44] text-white rounded-full">Load More</button>
+            <button
+              onClick={loadMore}
+              className="px-6 py-2 bg-[#1f2a44] text-white rounded-full"
+            >
+              Load More
+            </button>
           ) : visibleProducts > 6 && (
-            <button onClick={showLess} className="px-6 py-2 border border-[#1f2a44] text-[#1f2a44] rounded-full">Show Less</button>
+            <button
+              onClick={showLess}
+              className="px-6 py-2 border border-[#1f2a44] text-[#1f2a44] rounded-full"
+            >
+              Show Less
+            </button>
           )}
         </div>
       </motion.div>

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import { assets } from "../assets/assets/assets";
+import { assets } from "../assets/assets/assets.js";
 import { Link, NavLink } from "react-router-dom";
-import { ShopContext } from "../../context/ShopContext";
+import { ShopContext } from "../../context/ShopContext.jsx";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
@@ -17,7 +17,8 @@ const Navbar = () => {
   }
 
   return (
-    <div className="flex items-center justify-between py-5 font-medium bg-gradient-to-r from-[#FAF3E0] to-[#F5E6E8]">
+  <div className="flex items-center justify-between py-5 font-medium bg-white shadow-sm">
+
 
 
 
@@ -91,3 +92,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
-import Title from '../componets/Title'
-import CartTotal from '../componets/CartTotal'
-import { assets } from '../assets/assets/assets'
-import { ShopContext } from '../../context/ShopContext'
+import Title from '../components/Title.jsx'
+import CartTotal from '../components/CartTotal.jsx'
+import { assets } from '../assets/assets/assets.js'
+import { ShopContext } from '../../context/ShopContext.jsx'
 import { toast } from "react-toastify";
 import axios from "axios";
 

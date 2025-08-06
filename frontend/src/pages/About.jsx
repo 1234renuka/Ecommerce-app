@@ -105,8 +105,8 @@
 // export default About;
 
 import React from 'react';
-import Title from '../componets/Title';
-import { assets } from '../assets/assets/assets';
+import Title from '../components/Title.jsx';
+import { assets } from '../assets/assets/assets.js';
 import { motion } from 'framer-motion';
 import { Star, Smile, ThumbsUp } from 'lucide-react';
 

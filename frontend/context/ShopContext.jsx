@@ -9,7 +9,7 @@ const ShopContextProvider =(props)=>{
    
    const currency = '₹';
    const delivery_fee = 100;
-   const backendUrl = " http://localhost:4000";
+   const backendUrl = "http://localhost:4000";
    const[search,setSearch] =useState('');
    const[showSearch,setShowSearch] =useState(false);
    const [cartItems,setCartItems] = useState({});
@@ -120,7 +120,7 @@ const ShopContextProvider =(props)=>{
   const getProductsData =  async () =>{
     try{
        
-     const response = await axios.get(backendUrl + '/api/product/list')
+     const response = await axios.get(backendUrl +'/api/product/list')
      
      if(response.data.success){
       setProducts(response.data.product)
@@ -140,7 +140,7 @@ const ShopContextProvider =(props)=>{
   const getUserCart = async (token) =>{
     try {
       
-      const response = await axios.post(backendUrl + '/api/cart/get',{},{headers:{token}})
+      const response = await axios.post(backendUrl +'/api/cart/get',{},{headers:{token}})
      if(response.data.success) {
       setCartItems(response.data.cartData)
      }   
