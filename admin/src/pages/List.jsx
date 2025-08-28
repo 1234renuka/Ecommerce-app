@@ -2,7 +2,8 @@
 
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { backendUrl, currency } from '../App'
+import {  currency } from '../App'
+const  backendUrl =import.meta.env.VITE_BACKEND_URL;
 import { toast } from 'react-toastify'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
